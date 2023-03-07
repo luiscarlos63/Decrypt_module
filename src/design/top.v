@@ -22,9 +22,6 @@
 
 module icap_inst(
     input CLK,
-    output out_I,
-    output out_O,
-//    output out_clk,
   (* X_INTERFACE_INFO = "xilinx.com:interface:icap:1.0 ICAP avail" *)   output        AVAIL,
   (* X_INTERFACE_INFO = "xilinx.com:interface:icap:1.0 ICAP o" *)       output [31:0] O,
   (* X_INTERFACE_INFO = "xilinx.com:interface:icap:1.0 ICAP prdone" *)  output        PRDONE,
@@ -45,9 +42,6 @@ module icap_inst(
       .RDWRB(RDWRB)           // 1-bit input: Read/Write Select input
    );
 
-assign out_I = I;
-assign out_O = O;
-//ssign out_clk = CLK;
 endmodule
 
 
