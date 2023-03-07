@@ -18,7 +18,13 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
- "[file normalize "$origin_dir/src/design/top.v"]"\
+ "[file normalize "$origin_dir/src/design/aes_core.v"]"\
+ "[file normalize "$origin_dir/src/design/aes_decipher_block.v"]"\
+ "[file normalize "$origin_dir/src/design/aes_encipher_block.v"]"\
+ "[file normalize "$origin_dir/src/design/aes_inv_sbox.v"]"\
+ "[file normalize "$origin_dir/src/design/aes_key_mem.v"]"\
+ "[file normalize "$origin_dir/src/design/aes_sbox.v"]"\
+ "[file normalize "$origin_dir/src/design/aes.v"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -135,7 +141,13 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- [file normalize "${origin_dir}/src/design/top.v"] \
+ [file normalize "${origin_dir}/src/design/aes_core.v"] \
+ [file normalize "${origin_dir}/src/design/aes_decipher_block.v"] \
+ [file normalize "${origin_dir}/src/design/aes_encipher_block.v"] \
+ [file normalize "${origin_dir}/src/design/aes_inv_sbox.v"] \
+ [file normalize "${origin_dir}/src/design/aes_key_mem.v"] \
+ [file normalize "${origin_dir}/src/design/aes_sbox.v"] \
+ [file normalize "${origin_dir}/src/design/aes.v"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -147,7 +159,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "icap_inst" -objects $obj
+set_property -name "top" -value "aes" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -173,7 +185,7 @@ set obj [get_filesets sim_1]
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property -name "top" -value "icap_inst" -objects $obj
+set_property -name "top" -value "aes" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
 
 # Set 'utils_1' fileset object
