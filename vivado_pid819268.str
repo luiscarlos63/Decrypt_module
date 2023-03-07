@@ -169,3 +169,70 @@ setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "git init", true); // l
 // Tcl Command: 'git init'
 // Tcl Message: git init 
 // Tcl Command: 'rdi::info_commands {g*}'
+// Elapsed time: 40 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "git add.", true); // l
+// Tcl Command: 'git add.'
+// Tcl Command: 'git add.'
+// Tcl Message: git add. 
+// Tcl Message: git: 'add.' is not a git command. See 'git --help'.  The most similar command is 	add 
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "git add .", true); // l
+// Tcl Command: 'git add .'
+// Tcl Command: 'git add .'
+// Tcl Message: git add . 
+// Tcl Command: 'rdi::match_options {git} {}'
+// Tcl Command: 'rdi::match_options {git} {m}'
+// Elapsed time: 15 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "git commit -m \"primeiro comiitttt\"", true); // l
+// Tcl Command: 'git commit -m "primeiro comiitttt"'
+// Tcl Command: 'git commit -m "primeiro comiitttt"'
+// TclEventType: PROJECT_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: git commit -m "primeiro comiitttt" 
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: INFO: [Vivado-projutils-8] Tcl script 'vivado_project.tcl' generated in output directory '/home/luiscarlos/Desktop/ultra/ultra96_ptl/ultra96v2-vitis-pkg/vivado3/Decrypt/Hardware/decrypt_module'  INFO: [Vivado-projutils-15] The file paths for the project source files were set relative to the location of the generated script. 
+// Tcl Message: vivado_project.tcl [master (root-commit) 2a678aa] primeiro comiitttt  7 files changed, 1286 insertions(+)  create mode 100644 .gitignore  create mode 100644 src/constraints/contrs.xdc  create mode 100644 src/design/top.v  create mode 100644 src/scripts/prep_for_icap  create mode 100644 sw/helloworld.c  create mode 100644 vivado_pid819268.str  create mode 100644 vivado_project.tcl 
+dismissDialog("Tcl Command Line"); // bA
+// HMemoryUtils.trashcanNow. Engine heap size: 1,936 MB. GUI used memory: 81 MB. Current time: 3/7/23, 3:04:01 PM WET
+// Tcl Command: 'rdi::match_options {git} {}'
+// Tcl Command: 'rdi::match_options {git} {m}'
+// Elapsed time: 34 seconds
+setText(RDIResource.CommandsInput_TYPE_TCL_COMMAND_HERE, "git commit -m \"segundo\"", true); // l
+// Tcl Command: 'git commit -m "segundo"'
+// Tcl Command: 'git commit -m "segundo"'
+// TclEventType: PROJECT_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// Tcl Message: git commit -m "segundo" 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: INFO: [Vivado-projutils-8] Tcl script 'vivado_project.tcl' generated in output directory '/home/luiscarlos/Desktop/ultra/ultra96_ptl/ultra96v2-vitis-pkg/vivado3/Decrypt/Hardware/decrypt_module'  INFO: [Vivado-projutils-15] The file paths for the project source files were set relative to the location of the generated script. 
+// Tcl Message: vivado_project.tcl 
+// Tcl Message: On branch master Changes not staged for commit:   (use "git add <file>..." to update what will be committed)   (use "git restore <file>..." to discard changes in working directory) 	modified:   .gitignore 	modified:   vivado_pid819268.str  no changes added to commit (use "git add" and/or "git commit -a") child process exited abnormally 
+// Elapsed time: 289 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 1); // D
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 1); // D
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0); // D
+// PAPropertyPanels.initPanels (top.v) elapsed time: 0.2s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, icap_inst (top.v)]", 1, false); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, icap_inst (top.v)]", 1, false); // D
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, icap_inst (top.v)]", 1, false, false, false, false, false, true); // D - Double Click
+// WARNING: HEventQueue.dispatchEvent() is taking  1748 ms.
+dismissDialog("Opening Editor"); // bA
