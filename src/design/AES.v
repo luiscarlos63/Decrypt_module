@@ -35,10 +35,12 @@ wire[127:0] decrypted128;
 wire[127:0] decrypted192;
 wire[127:0] decrypted256;
 
+//Encrypt
 AES_Encrypt a(in,key128,encrypted128);
 AES_Encrypt #(192,12,6) b(in,key192,encrypted192);
 AES_Encrypt #(256,14,8) c(in,key256,encrypted256);
 
+//Decrypt
 AES_Decrypt a2(encrypted128,key128,decrypted128);
 AES_Decrypt #(192,12,6) b2(encrypted192,key192,decrypted192);
 AES_Decrypt #(256,14,8) c2(encrypted256,key256,decrypted256);
