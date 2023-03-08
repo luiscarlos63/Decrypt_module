@@ -1,7 +1,7 @@
 /*
     Valete
     AES modules
-    Board: ultra96v2
+    Board: ZyboZ7-7010
 
 */
 
