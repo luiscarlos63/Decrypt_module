@@ -1,3 +1,10 @@
+/*
+    Valete
+    AES modules
+    Board: ultra96v2
+
+*/
+
 module AES(enable, e128, d128, e192, d192, e256, d256);
 
 output wire e128;
