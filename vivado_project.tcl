@@ -18,13 +18,32 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
- "[file normalize "$origin_dir/src/design/aes_core.v"]"\
- "[file normalize "$origin_dir/src/design/aes_decipher_block.v"]"\
- "[file normalize "$origin_dir/src/design/aes_encipher_block.v"]"\
- "[file normalize "$origin_dir/src/design/aes_inv_sbox.v"]"\
- "[file normalize "$origin_dir/src/design/aes_key_mem.v"]"\
- "[file normalize "$origin_dir/src/design/aes_sbox.v"]"\
- "[file normalize "$origin_dir/src/design/aes.v"]"\
+ "[file normalize "$origin_dir/vivado_project/vivado_project.srcs/utils_1/imports/synth_1/aes.dcp"]"\
+  ]
+  foreach ifile $files {
+    if { ![file isfile $ifile] } {
+      puts " Could not find local file $ifile "
+      set status false
+    }
+  }
+
+  set files [list \
+ "[file normalize "$origin_dir/src/design/AES_Decrypt.v"]"\
+ "[file normalize "$origin_dir/src/design/AES_Encrypt.v"]"\
+ "[file normalize "$origin_dir/src/design/addRoundKey.v"]"\
+ "[file normalize "$origin_dir/src/design/decryptRound.v"]"\
+ "[file normalize "$origin_dir/src/design/encryptRound.v"]"\
+ "[file normalize "$origin_dir/src/design/inverseMixColumns.v"]"\
+ "[file normalize "$origin_dir/src/design/inverseSbox.v"]"\
+ "[file normalize "$origin_dir/src/design/inverseShiftRows.v"]"\
+ "[file normalize "$origin_dir/src/design/inverseSubBytes.v"]"\
+ "[file normalize "$origin_dir/src/design/keyExpansion.v"]"\
+ "[file normalize "$origin_dir/src/design/mixColumns.v"]"\
+ "[file normalize "$origin_dir/src/design/sbox.v"]"\
+ "[file normalize "$origin_dir/src/design/shiftRows.v"]"\
+ "[file normalize "$origin_dir/src/design/subBytes.v"]"\
+ "[file normalize "$origin_dir/src/design/AES.v"]"\
+ "[file normalize "$origin_dir/src/constraints/constrs.xdc"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -141,13 +160,21 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- [file normalize "${origin_dir}/src/design/aes_core.v"] \
- [file normalize "${origin_dir}/src/design/aes_decipher_block.v"] \
- [file normalize "${origin_dir}/src/design/aes_encipher_block.v"] \
- [file normalize "${origin_dir}/src/design/aes_inv_sbox.v"] \
- [file normalize "${origin_dir}/src/design/aes_key_mem.v"] \
- [file normalize "${origin_dir}/src/design/aes_sbox.v"] \
- [file normalize "${origin_dir}/src/design/aes.v"] \
+ [file normalize "${origin_dir}/src/design/AES_Decrypt.v"] \
+ [file normalize "${origin_dir}/src/design/AES_Encrypt.v"] \
+ [file normalize "${origin_dir}/src/design/addRoundKey.v"] \
+ [file normalize "${origin_dir}/src/design/decryptRound.v"] \
+ [file normalize "${origin_dir}/src/design/encryptRound.v"] \
+ [file normalize "${origin_dir}/src/design/inverseMixColumns.v"] \
+ [file normalize "${origin_dir}/src/design/inverseSbox.v"] \
+ [file normalize "${origin_dir}/src/design/inverseShiftRows.v"] \
+ [file normalize "${origin_dir}/src/design/inverseSubBytes.v"] \
+ [file normalize "${origin_dir}/src/design/keyExpansion.v"] \
+ [file normalize "${origin_dir}/src/design/mixColumns.v"] \
+ [file normalize "${origin_dir}/src/design/sbox.v"] \
+ [file normalize "${origin_dir}/src/design/shiftRows.v"] \
+ [file normalize "${origin_dir}/src/design/subBytes.v"] \
+ [file normalize "${origin_dir}/src/design/AES.v"] \
 ]
 add_files -norecurse -fileset $obj $files
 
@@ -159,7 +186,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "aes" -objects $obj
+set_property -name "top" -value "AES" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
 if {[string equal [get_filesets -quiet constrs_1] ""]} {
@@ -169,10 +196,18 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 # Set 'constrs_1' fileset object
 set obj [get_filesets constrs_1]
 
-# Empty (no sources present)
+# Add/Import constrs file and set constrs file properties
+set file "[file normalize "$origin_dir/src/constraints/constrs.xdc"]"
+set file_added [add_files -norecurse -fileset $obj [list $file]]
+set file "$origin_dir/src/constraints/constrs.xdc"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
+set_property -name "file_type" -value "XDC" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
+set_property -name "target_constrs_file" -value "[file normalize "$origin_dir/src/constraints/constrs.xdc"]" -objects $obj
+set_property -name "target_ucf" -value "[file normalize "$origin_dir/src/constraints/constrs.xdc"]" -objects $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -185,12 +220,25 @@ set obj [get_filesets sim_1]
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property -name "top" -value "aes" -objects $obj
+set_property -name "top" -value "AES" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
 
 # Set 'utils_1' fileset object
 set obj [get_filesets utils_1]
-# Empty (no sources present)
+# Add local files from the original project (-no_copy_sources specified)
+set files [list \
+ [file normalize "${origin_dir}/vivado_project/vivado_project.srcs/utils_1/imports/synth_1/aes.dcp" ]\
+]
+set added_files [add_files -fileset utils_1 $files]
+
+# Set 'utils_1' fileset file properties for remote files
+# None
+
+# Set 'utils_1' fileset file properties for local files
+set file "synth_1/aes.dcp"
+set file_obj [get_files -of_objects [get_filesets utils_1] [list "*$file"]]
+set_property -name "netlist_only" -value "0" -objects $file_obj
+
 
 # Set 'utils_1' fileset properties
 set obj [get_filesets utils_1]
@@ -221,6 +269,7 @@ if { $obj != "" } {
 
 }
 set obj [get_runs synth_1]
+set_property -name "incremental_checkpoint" -value "$proj_dir/vivado_project.srcs/utils_1/imports/synth_1/aes.dcp" -objects $obj
 set_property -name "auto_incremental_checkpoint" -value "1" -objects $obj
 set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
 
