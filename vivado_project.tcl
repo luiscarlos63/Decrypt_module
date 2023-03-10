@@ -18,22 +18,27 @@
 proc checkRequiredFiles { origin_dir} {
   set status true
   set files [list \
+ "[file normalize "$origin_dir/vivado_project/vivado_project.srcs/sources_1/new/decrypt_loader.v"]"\
+  ]
+  foreach ifile $files {
+    if { ![file isfile $ifile] } {
+      puts " Could not find local file $ifile "
+      set status false
+    }
+  }
+
+  set files [list \
+ "[file normalize "$origin_dir/src/design/rom_mem.v"]"\
  "[file normalize "$origin_dir/src/design/AES_Decrypt.v"]"\
- "[file normalize "$origin_dir/src/design/AES_Encrypt.v"]"\
  "[file normalize "$origin_dir/src/design/addRoundKey.v"]"\
  "[file normalize "$origin_dir/src/design/decryptRound.v"]"\
- "[file normalize "$origin_dir/src/design/encryptRound.v"]"\
  "[file normalize "$origin_dir/src/design/inverseMixColumns.v"]"\
  "[file normalize "$origin_dir/src/design/inverseSbox.v"]"\
  "[file normalize "$origin_dir/src/design/inverseShiftRows.v"]"\
  "[file normalize "$origin_dir/src/design/inverseSubBytes.v"]"\
  "[file normalize "$origin_dir/src/design/keyExpansion.v"]"\
- "[file normalize "$origin_dir/src/design/mixColumns.v"]"\
- "[file normalize "$origin_dir/src/design/sbox.v"]"\
- "[file normalize "$origin_dir/src/design/shiftRows.v"]"\
- "[file normalize "$origin_dir/src/design/subBytes.v"]"\
- "[file normalize "$origin_dir/src/design/AES.v"]"\
  "[file normalize "$origin_dir/src/constraints/constrs.xdc"]"\
+ "[file normalize "$origin_dir/src/sim/design_1_tb.v"]"\
   ]
   foreach ifile $files {
     if { ![file isfile $ifile] } {
@@ -141,6 +146,14 @@ set_property -name "revised_directory_structure" -value "1" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
+set_property -name "webtalk.activehdl_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.modelsim_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.questa_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.riviera_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.vcs_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.xcelium_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.xsim_export_sim" -value "21" -objects $obj
+set_property -name "webtalk.xsim_launch_sim" -value "83" -objects $obj
 
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -150,23 +163,23 @@ if {[string equal [get_filesets -quiet sources_1] ""]} {
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
+ [file normalize "${origin_dir}/src/design/rom_mem.v"] \
  [file normalize "${origin_dir}/src/design/AES_Decrypt.v"] \
- [file normalize "${origin_dir}/src/design/AES_Encrypt.v"] \
  [file normalize "${origin_dir}/src/design/addRoundKey.v"] \
  [file normalize "${origin_dir}/src/design/decryptRound.v"] \
- [file normalize "${origin_dir}/src/design/encryptRound.v"] \
  [file normalize "${origin_dir}/src/design/inverseMixColumns.v"] \
  [file normalize "${origin_dir}/src/design/inverseSbox.v"] \
  [file normalize "${origin_dir}/src/design/inverseShiftRows.v"] \
  [file normalize "${origin_dir}/src/design/inverseSubBytes.v"] \
  [file normalize "${origin_dir}/src/design/keyExpansion.v"] \
- [file normalize "${origin_dir}/src/design/mixColumns.v"] \
- [file normalize "${origin_dir}/src/design/sbox.v"] \
- [file normalize "${origin_dir}/src/design/shiftRows.v"] \
- [file normalize "${origin_dir}/src/design/subBytes.v"] \
- [file normalize "${origin_dir}/src/design/AES.v"] \
 ]
 add_files -norecurse -fileset $obj $files
+
+# Add local files from the original project (-no_copy_sources specified)
+set files [list \
+ [file normalize "${origin_dir}/vivado_project/vivado_project.srcs/sources_1/new/decrypt_loader.v" ]\
+]
+set added_files [add_files -fileset sources_1 $files]
 
 # Set 'sources_1' fileset file properties for remote files
 # None
@@ -176,7 +189,7 @@ add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset properties
 set obj [get_filesets sources_1]
-set_property -name "top" -value "AES" -objects $obj
+set_property -name "top" -value "rom_mem" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # Create 'constrs_1' fileset (if not found)
@@ -207,11 +220,20 @@ if {[string equal [get_filesets -quiet sim_1] ""]} {
 
 # Set 'sim_1' fileset object
 set obj [get_filesets sim_1]
-# Empty (no sources present)
+set files [list \
+ [file normalize "${origin_dir}/src/sim/design_1_tb.v"] \
+]
+add_files -norecurse -fileset $obj $files
+
+# Set 'sim_1' fileset file properties for remote files
+# None
+
+# Set 'sim_1' fileset file properties for local files
+# None
 
 # Set 'sim_1' fileset properties
 set obj [get_filesets sim_1]
-set_property -name "top" -value "AES" -objects $obj
+set_property -name "top" -value "design_1_tb" -objects $obj
 set_property -name "top_auto_set" -value "0" -objects $obj
 set_property -name "top_lib" -value "xil_defaultlib" -objects $obj
 
@@ -224,10 +246,45 @@ set obj [get_filesets utils_1]
 
 
 # Adding sources referenced in BDs, if not already added
+if { [get_files AES_Decrypt.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/AES_Decrypt.v"
+}
+if { [get_files addRoundKey.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/addRoundKey.v"
+}
+if { [get_files decryptRound.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/decryptRound.v"
+}
+if { [get_files inverseMixColumns.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/inverseMixColumns.v"
+}
+if { [get_files inverseSbox.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/inverseSbox.v"
+}
+if { [get_files inverseShiftRows.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/inverseShiftRows.v"
+}
+if { [get_files inverseSubBytes.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/inverseSubBytes.v"
+}
+if { [get_files keyExpansion.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/keyExpansion.v"
+}
+if { [get_files decrypt_loader.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/vivado_project/vivado_project.srcs/sources_1/new/decrypt_loader.v"
+}
+if { [get_files rom_mem.v] == "" } {
+  import_files -quiet -fileset sources_1 "$origin_dir/src/design/rom_mem.v"
+}
 
 
 # Proc to create BD design_1
 proc cr_bd_design_1 { parentCell } {
+# The design that will be created by this Tcl proc contains the following 
+# module references:
+# decrypt_loader, rom_mem
+
+
 
   # CHANGE DESIGN NAME HERE
   set design_name design_1
@@ -237,9 +294,57 @@ proc cr_bd_design_1 { parentCell } {
   create_bd_design $design_name
 
   set bCheckIPsPassed 1
-##################################################################
-# There are no IPs, Modules, nor sources to check.
-##################################################################
+  ##################################################################
+  # CHECK IPs
+  ##################################################################
+  set bCheckIPs 1
+  if { $bCheckIPs == 1 } {
+     set list_check_ips "\ 
+  xilinx.com:ip:blk_mem_gen:8.4\
+  "
+
+   set list_ips_missing ""
+   common::send_gid_msg -ssname BD::TCL -id 2011 -severity "INFO" "Checking if the following IPs exist in the project's IP catalog: $list_check_ips ."
+
+   foreach ip_vlnv $list_check_ips {
+      set ip_obj [get_ipdefs -all $ip_vlnv]
+      if { $ip_obj eq "" } {
+         lappend list_ips_missing $ip_vlnv
+      }
+   }
+
+   if { $list_ips_missing ne "" } {
+      catch {common::send_gid_msg -ssname BD::TCL -id 2012 -severity "ERROR" "The following IPs are not found in the IP Catalog:\n  $list_ips_missing\n\nResolution: Please add the repository containing the IP(s) to the project." }
+      set bCheckIPsPassed 0
+   }
+
+  }
+
+  ##################################################################
+  # CHECK Modules
+  ##################################################################
+  set bCheckModules 1
+  if { $bCheckModules == 1 } {
+     set list_check_mods "\ 
+  decrypt_loader\
+  rom_mem\
+  "
+
+   set list_mods_missing ""
+   common::send_gid_msg -ssname BD::TCL -id 2020 -severity "INFO" "Checking if the following modules exist in the project's sources: $list_check_mods ."
+
+   foreach mod_vlnv $list_check_mods {
+      if { [can_resolve_reference $mod_vlnv] == 0 } {
+         lappend list_mods_missing $mod_vlnv
+      }
+   }
+
+   if { $list_mods_missing ne "" } {
+      catch {common::send_gid_msg -ssname BD::TCL -id 2021 -severity "ERROR" "The following module(s) are not found in the project: $list_mods_missing" }
+      common::send_gid_msg -ssname BD::TCL -id 2022 -severity "INFO" "Please add source files for the missing module(s) above."
+      set bCheckIPsPassed 0
+   }
+}
 
   if { $bCheckIPsPassed != 1 } {
     common::send_gid_msg -ssname BD::TCL -id 2023 -severity "WARNING" "Will not continue with creation of design due to the error(s) above."
@@ -276,8 +381,74 @@ proc cr_bd_design_1 { parentCell } {
   # Create interface ports
 
   # Create ports
+  set bit_addr_0 [ create_bd_port -dir I -from 12 -to 0 bit_addr_0 ]
+  set bit_size_0 [ create_bd_port -dir I -from 12 -to 0 bit_size_0 ]
+  set done_0 [ create_bd_port -dir O done_0 ]
+  set reset_rtl [ create_bd_port -dir I -type rst reset_rtl ]
+  set_property -dict [ list \
+   CONFIG.POLARITY {ACTIVE_HIGH} \
+ ] $reset_rtl
+  set sys_clock [ create_bd_port -dir I -type clk -freq_hz 125000000 sys_clock ]
+  set_property -dict [ list \
+   CONFIG.PHASE {0.0} \
+ ] $sys_clock
+  set trigger_0 [ create_bd_port -dir I trigger_0 ]
 
+  # Create instance: blk_mem_gen_0, and set properties
+  set blk_mem_gen_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 blk_mem_gen_0 ]
+  set_property -dict [ list \
+   CONFIG.Byte_Size {9} \
+   CONFIG.EN_SAFETY_CKT {false} \
+   CONFIG.Enable_32bit_Address {false} \
+   CONFIG.Read_Width_A {128} \
+   CONFIG.Read_Width_B {128} \
+   CONFIG.Register_PortA_Output_of_Memory_Primitives {true} \
+   CONFIG.Use_Byte_Write_Enable {false} \
+   CONFIG.Use_RSTA_Pin {false} \
+   CONFIG.Write_Width_A {128} \
+   CONFIG.Write_Width_B {128} \
+   CONFIG.use_bram_block {Stand_Alone} \
+ ] $blk_mem_gen_0
+
+  # Create instance: decrypt_loader_0, and set properties
+  set block_name decrypt_loader
+  set block_cell_name decrypt_loader_0
+  if { [catch {set decrypt_loader_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $decrypt_loader_0 eq "" } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+    set_property -dict [ list \
+   CONFIG.RAM_ADDR_WIDTH {13} \
+   CONFIG.ROM_ADDR_WIDTH {13} \
+ ] $decrypt_loader_0
+
+  # Create instance: rom_mem_0, and set properties
+  set block_name rom_mem
+  set block_cell_name rom_mem_0
+  if { [catch {set rom_mem_0 [create_bd_cell -type module -reference $block_name $block_cell_name] } errmsg] } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2095 -severity "ERROR" "Unable to add referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   } elseif { $rom_mem_0 eq "" } {
+     catch {common::send_gid_msg -ssname BD::TCL -id 2096 -severity "ERROR" "Unable to referenced block <$block_name>. Please add the files for ${block_name}'s definition into the project."}
+     return 1
+   }
+  
   # Create port connections
+  connect_bd_net -net bit_addr_0_1 [get_bd_ports bit_addr_0] [get_bd_pins decrypt_loader_0/bit_addr]
+  connect_bd_net -net bit_size_0_1 [get_bd_ports bit_size_0] [get_bd_pins decrypt_loader_0/bit_size]
+  connect_bd_net -net clk_wiz_clk_out1 [get_bd_ports sys_clock] [get_bd_pins blk_mem_gen_0/clka] [get_bd_pins decrypt_loader_0/clk]
+  connect_bd_net -net decrypt_loader_0_done [get_bd_ports done_0] [get_bd_pins decrypt_loader_0/done]
+  connect_bd_net -net decrypt_loader_0_ram_addr [get_bd_pins blk_mem_gen_0/addra] [get_bd_pins decrypt_loader_0/ram_addr]
+  connect_bd_net -net decrypt_loader_0_ram_data [get_bd_pins blk_mem_gen_0/dina] [get_bd_pins decrypt_loader_0/ram_data]
+  connect_bd_net -net decrypt_loader_0_ram_ena [get_bd_pins blk_mem_gen_0/ena] [get_bd_pins decrypt_loader_0/ram_ena]
+  connect_bd_net -net decrypt_loader_0_ram_wea [get_bd_pins blk_mem_gen_0/wea] [get_bd_pins decrypt_loader_0/ram_wea]
+  connect_bd_net -net decrypt_loader_0_rom_addr [get_bd_pins decrypt_loader_0/rom_addr] [get_bd_pins rom_mem_0/a]
+  connect_bd_net -net reset_rtl_1 [get_bd_ports reset_rtl] [get_bd_pins decrypt_loader_0/rst]
+  connect_bd_net -net rom_mem_0_rd [get_bd_pins decrypt_loader_0/rom_data] [get_bd_pins rom_mem_0/rd]
+  connect_bd_net -net trigger_0_1 [get_bd_ports trigger_0] [get_bd_pins decrypt_loader_0/trigger]
 
   # Create address segments
 
@@ -285,9 +456,8 @@ proc cr_bd_design_1 { parentCell } {
   # Restore current instance
   current_bd_instance $oldCurInst
 
+  validate_bd_design
   save_bd_design
-common::send_gid_msg -ssname BD::TCL -id 2050 -severity "WARNING" "This Tcl script was generated from a block design that has not been validated. It is possible that design <$design_name> may result in errors during validation."
-
   close_bd_design $design_name 
 }
 # End of cr_bd_design_1()
@@ -325,6 +495,7 @@ if { $obj != "" } {
 
 }
 set obj [get_runs synth_1]
+set_property -name "needs_refresh" -value "1" -objects $obj
 set_property -name "auto_incremental_checkpoint" -value "1" -objects $obj
 set_property -name "auto_incremental_checkpoint.directory" -value "/home/luiscarlos/Desktop/ultra/ultra96_ptl/ultra96v2-vitis-pkg/vivado3/Decrypt/Hardware/defefef/Decrypt_module/vivado_project/vivado_project.srcs/utils_1/imports/synth_1" -objects $obj
 set_property -name "strategy" -value "Vivado Synthesis Defaults" -objects $obj
@@ -548,6 +719,7 @@ set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
 set obj [get_runs impl_1]
+set_property -name "needs_refresh" -value "1" -objects $obj
 set_property -name "auto_incremental_checkpoint.directory" -value "/home/luiscarlos/Desktop/ultra/ultra96_ptl/ultra96v2-vitis-pkg/vivado3/Decrypt/Hardware/defefef/Decrypt_module/vivado_project/vivado_project.srcs/utils_1/imports/impl_1" -objects $obj
 set_property -name "strategy" -value "Vivado Implementation Defaults" -objects $obj
 set_property -name "steps.write_bitstream.args.readback_file" -value "0" -objects $obj

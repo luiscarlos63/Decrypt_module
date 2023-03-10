@@ -1,0 +1,78 @@
+#--------------------------------------------------------------------------
+# Xilinx Vivado v2021.2 (64-bit)
+# SW Build: 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build: 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Current time: Fri Mar 10 17:13:43 WET 2023
+# Process ID (PID): 94729
+# User: luiscarlos
+# OS: Ubuntu
+# Project: vivado_project
+# Part: Zybo Z7-10 (xc7z010clg400-1)
+#
+# This file is an indication that an internal application error occurred.
+# This information is useful for debugging. Please open a case with Xilinx.
+# Technical Support with this file and a testcase attached.
+#--------------------------------------------------------------------------
+Fri Mar 10 17:13:43 WET 2023
+java.lang.ArrayIndexOutOfBoundsException: Index -2 out of bounds for length 10
+	at com.jidesoft.editor.KeywordMap.getSegmentMapKey(Unknown Source)
+	at com.jidesoft.editor.KeywordMap.lookup(Unknown Source)
+	at ui.views.U.a.ba.a(SourceFile:326)
+	at ui.views.U.a.ba.markTokensImpl(SourceFile:298)
+	at com.jidesoft.editor.tokenmarker.TokenMarker.markTokens(Unknown Source)
+	at com.jidesoft.editor.CodeEditor.a(Unknown Source)
+	at com.jidesoft.editor.CodeEditor.xToOffset(Unknown Source)
+	at com.jidesoft.editor.CodeEditor.xToColumn(Unknown Source)
+	at com.jidesoft.editor.CodeEditor.xyToOffset(Unknown Source)
+	at ui.views.U.a.ai.paintMargin(SourceFile:192)
+	at com.jidesoft.margin.AbstractMargin.paintComponent(Unknown Source)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1074)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintChildren(JComponent.java:907)
+	at java.desktop/javax.swing.JComponent.paint(JComponent.java:1083)
+	at java.desktop/javax.swing.JComponent.paintToOffscreen(JComponent.java:5255)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBufferedImpl(RepaintManager.java:1643)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(RepaintManager.java:1618)
+	at java.desktop/javax.swing.RepaintManager$PaintManager.paint(RepaintManager.java:1556)
+	at java.desktop/javax.swing.BufferStrategyPaintManager.paint(BufferStrategyPaintManager.java:262)
+	at java.desktop/javax.swing.RepaintManager.paint(RepaintManager.java:1323)
+	at java.desktop/javax.swing.JComponent._paintImmediately(JComponent.java:5203)
+	at java.desktop/javax.swing.JComponent.paintImmediately(JComponent.java:5013)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:865)
+	at java.desktop/javax.swing.RepaintManager$4.run(RepaintManager.java:848)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:848)
+	at java.desktop/javax.swing.RepaintManager.paintDirtyRegions(RepaintManager.java:823)
+	at java.desktop/javax.swing.RepaintManager.prePaintDirtyRegions(RepaintManager.java:772)
+	at java.desktop/javax.swing.RepaintManager$ProcessingRunnable.run(RepaintManager.java:1890)
+	at java.desktop/java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:313)
+	at java.desktop/java.awt.EventQueue.dispatchEventImpl(EventQueue.java:770)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:721)
+	at java.desktop/java.awt.EventQueue$4.run(EventQueue.java:715)
+	at java.base/java.security.AccessController.doPrivileged(Native Method)
+	at java.base/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:85)
+	at java.desktop/java.awt.EventQueue.dispatchEvent(EventQueue.java:740)
+	at ui.frmwork.a.d.dispatchEvent(SourceFile:92)
+	at java.desktop/java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:203)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:124)
+	at java.desktop/java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:113)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:109)
+	at java.desktop/java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.desktop/java.awt.EventDispatchThread.run(EventDispatchThread.java:90)
+
